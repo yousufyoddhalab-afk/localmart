@@ -1,0 +1,16 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm test
+        working-directory: api
+      - run: python3 -m unittest
+        working-directory: services/settlement
+      - run: make test
+        working-directory: services/dispatch
+      - run: php -l apply/index.php
